@@ -1,0 +1,97 @@
+-- SQLite Schema for Netlify
+-- Run this in your database console
+
+CREATE TABLE users (
+  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+  email TEXT UNIQUE NOT NULL,
+  password TEXT NOT NULL,
+  full_name TEXT NOT NULL,
+  role TEXT DEFAULT 'user',
+  phone_number TEXT,
+  date_of_birth DATE,
+  profile_image TEXT,
+  account_balance DECIMAL(10,2) DEFAULT 0,
+  created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  address JSON,
+  professional_details JSON,
+  identification JSON,
+  payment_methods JSON,
+  preferences JSON
+);
+
+CREATE TABLE cars (
+  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+  make TEXT NOT NULL,
+  model TEXT NOT NULL,
+  year INTEGER NOT NULL,
+  category TEXT NOT NULL,
+  color TEXT,
+  license_plate TEXT UNIQUE NOT NULL,
+  vin TEXT,
+  daily_rate DECIMAL(10,2) NOT NULL,
+  weekly_rate DECIMAL(10,2),
+  monthly_rate DECIMAL(10,2),
+  deposit_amount DECIMAL(10,2),
+  status TEXT DEFAULT 'available',
+  mileage INTEGER,
+  last_service_date DATE,
+  next_service_due DATE,
+  created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_by TEXT NOT NULL,
+  specifications JSON,
+  images JSON,
+  location JSON
+);
+
+CREATE TABLE bookings (
+  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+  user_id TEXT NOT NULL,
+  car_id TEXT NOT NULL,
+  booking_reference TEXT UNIQUE NOT NULL,
+  start_date DATETIME NOT NULL,
+  end_date DATETIME NOT NULL,
+  total_amount DECIMAL(10,2) NOT NULL,
+  deposit_amount DECIMAL(10,2),
+  insurance_cost DECIMAL(10,2),
+  status TEXT DEFAULT 'pending',
+  payment_status TEXT DEFAULT 'pending',
+  special_requests TEXT,
+  driver_license_verified BOOLEAN DEFAULT 0,
+  created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  updated_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  created_by TEXT NOT NULL,
+  pickup_location JSON,
+  dropoff_location JSON,
+  additional_services JSON,
+  vehicle_condition_checkin JSON,
+  vehicle_condition_checkout JSON,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (car_id) REFERENCES cars(id)
+);
+
+CREATE TABLE payments (
+  id TEXT PRIMARY KEY DEFAULT (lower(hex(randomblob(16)))),
+  user_id TEXT NOT NULL,
+  booking_id TEXT,
+  transaction_id TEXT,
+  amount DECIMAL(10,2) NOT NULL,
+  currency TEXT DEFAULT 'USD',
+  payment_method TEXT NOT NULL,
+  payment_type TEXT NOT NULL,
+  status TEXT DEFAULT 'pending',
+  payment_details JSON,
+  failure_reason TEXT,
+  processed_at DATETIME,
+  created_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (booking_id) REFERENCES bookings(id)
+);
+
+-- Indexes for better performance
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_cars_status ON cars(status);
+CREATE INDEX idx_bookings_user_id ON bookings(user_id);
+CREATE INDEX idx_bookings_status ON bookings(status);
+CREATE INDEX idx_payments_user_id ON payments(user_id);

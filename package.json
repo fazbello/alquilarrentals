@@ -7,7 +7,10 @@
     "start": "react-scripts start",
     "dev": "react-scripts start",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "netlify dev:exec drizzle-kit migrate",
+    "db:studio": "netlify dev:exec drizzle-kit studio"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -25,24 +28,20 @@
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.32",
     "lucide-react": "^0.294.0",
-    "@radix-ui/react-accordion": 
-"^1.1.2",
+    "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-button": "^1.0.4",
     "@radix-ui/react-card": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
-    "@radix-ui/react-dropdown-menu": 
-"^2.0.6",
+    "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-input": "^1.0.4",
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-select": "^2.0.0",
     "@radix-ui/react-tabs": "^1.0.4",
-    "class-variance-authority": 
-"^0.7.0",
+    "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "tailwind-merge": "^2.0.0",
-    "embla-carousel-react": 
-"^8.0.0-rc17",
+    "embla-carousel-react": "^8.0.0-rc17",
     "date-fns": "^2.30.0",
     "lodash": "^4.17.21",
     "react-markdown": "^9.0.1",
